@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: mysql
   hostPath:
-    path: /mnt/data/mysql
+    path: /home/ubuntu/project/mysql-data
 
 ---
 
