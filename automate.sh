@@ -40,6 +40,8 @@ echo -e "[kube_control_plane]\nlocalhost\n\n[kube_node]\nlocalhost\n\n[etcd]\nlo
 
 echo -e "kube_version: v1.29.2\nhelm_enabled: true" > cluster-variable.yaml
 
+echo -e 'ingress_nginx_enabled: true\ningress_nginx_host_network: false\ningress_publish_status_address: ""' > inventory/mycluster/group_vars/k8s_cluster/addons.yml
+
 # Deploy Kubespray
 ansible-playbook -i inventory/mycluster/hosts.yaml -e @cluster-variable.yaml --become --become-user=root cluster.yml -e ansible_connection=local
 
