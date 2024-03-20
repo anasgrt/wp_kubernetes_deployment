@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: rewrite
+spec:
+  rules:
+  - host: kube1.playground.kabisa.io
+    http:
+      paths:
+      - path: /wordpress(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: wordpress-service
+            port:
+              number: 80
+  - host: kube1.playground.kabisa.io
+    http:
+      paths:
+      - path: /dbadmin(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: phpmyadmin-service
+            port:
+              number: 80
