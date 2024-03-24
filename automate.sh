@@ -46,6 +46,7 @@ echo -e 'ingress_nginx_enabled: true\ningress_nginx_host_network: false\ningress
 # enable cert-manager as an addon
 echo -e 'cert_manager_enabled: true\ncert_manager_namespace: "cert-manager"' >> inventory/mycluster/group_vars/k8s_cluster/addons.yml
 
+
 # Deploy Kubespray
 ansible-playbook -i inventory/mycluster/hosts.yaml -e @cluster-variable.yaml --become --become-user=root cluster.yml -e ansible_connection=local
 
@@ -54,4 +55,11 @@ sudo mkdir ~/.kube && sudo touch ~/.kube/config
 sudo cp /etc/kubernetes/admin.conf ~/.kube/config
 
 # check the accessibility to kubernetes cluster
+# Create a new kubernetes namespace
+kubectl create namespace wordpress
+
+# Add helm repository and install it in the namespace "wordpress"
+helm -n wordpress repo add wordpress https://anasgrt.github.io/wordpress-helm-chart/ && helm -n wordpress install wordpress wordpress/wordpress-helm-chart
+
+# Check the status of the resources
 kubectl get all -A
