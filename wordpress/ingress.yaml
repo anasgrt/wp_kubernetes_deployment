@@ -2,10 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    cert-manager.io/issuer: letsencrypt-nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
   name: rewrite
 spec:
+  ingressClassName: nginx
   rules:
   - host: kube1.playground.kabisa.io
     http:
@@ -27,3 +29,7 @@ spec:
             name: phpmyadmin-service
             port:
               number: 80
+  tls:
+  - hosts:
+    - kube1.playground.kabisa.io
+    secretName: letsencrypt-nginx
